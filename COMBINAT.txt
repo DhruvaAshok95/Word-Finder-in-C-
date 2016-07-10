@@ -1,0 +1,137 @@
+//THIS USES THE RANDOM FUNCTION TO GENERATE THE 2D GRID OF LETTERS. ENSURING THAT THERE IS A MINIMUM NUMBER OF VOWELS TO MAKE WORDS WITH
+// ON SELECTING A LETTER, IT GETS REPLACED WITH ANOTHER
+
+#include<fstream.h>
+#include<conio.h>
+#include<math.h>
+#include<ctype.h>
+#include<string.h>
+#include<process.h>
+#include<stdlib.h>
+const int N=4;
+int k=5;
+char a[N][N];
+void create()
+{
+	k=5;
+	randomize();
+
+	for(int i=0; i<N; i++)
+	{
+		for(int j=0; j<N; j++)
+		{
+			char b=65+ random(26);
+			if(b=='A'||b=='E'||b=='I'||b=='O'||b=='U')k--;
+			a[i][j]=b;
+		}
+	}
+	if(k>0)
+	{
+		while(k>0)
+		{
+			int x=random(N);
+			 int y=random(N);
+			int c=1+random(5);
+			if(c==1)
+			{
+				if(!(a[x][y]=='A'||a[x][y]=='E'||a[x][y]=='I'||a[x][y]=='O'||a[x][y]=='U'))
+				{
+					a[x][y]='A';     k--;
+				}
+			}
+			else if (c==2)
+			{
+				if(!(a[x][y]=='A'||a[x][y]=='E'||a[x][y]=='I'||a[x][y]=='O'||a[x][y]=='U'))
+				{
+					a[x][y]='E'; k--;
+				}
+			}
+			else if (c==3)
+			{
+				if(!(a[x][y]=='A'||a[x][y]=='E'||a[x][y]=='I'||a[x][y]=='O'||a[x][y]=='U'))
+				{
+					a[x][y]='I';k--;
+				}
+			}
+			else if (c==4)
+			{
+				if(!(a[x][y]=='A'||a[x][y]=='E'||a[x][y]=='I'||a[x][y]=='O'||a[x][y]=='U'))
+				{
+					a[x][y]='O'; k--;
+				}
+			}
+			else if (c==5)
+			{
+				if(!(a[x][y]=='A'||a[x][y]=='E'||a[x][y]=='I'||a[x][y]=='O'||a[x][y]=='U'))
+				{
+					a[x][y]='U';
+					k--;
+				}
+			}
+		}
+	}
+}
+void display()
+{
+	char s[20];
+	for(int m=0,i=122;i<300;i+=50,m++)
+		{
+			for( int n=0,j=122; j<300; j+=50,n++)
+			{
+				s[0]=a[m][n]; s[1]='\0';
+				outtextxy(i,j,s);
+			}
+		}
+}
+void replacement(char abc, int x, int y)
+{
+	int flag=0; int p=0,q=0;
+		a[x][y]=65+random(26);
+		while(p==0)
+		{
+			if((!(abc=='A'||abc=='E'||abc=='I'||abc=='O'||abc=='U'))&&(a[x][y]=='A'||a[x][y]=='E'||a[x][y]=='I'||a[x][y]=='O'||a[x][y]=='U'))
+			{ a[x][y]=65+random(26);}
+			else p=1;
+		}
+		a[x][y]=65+random(26);
+		while(a[x][y]==abc) a[x][y]=65+random(26);
+
+		if((abc=='A'||abc=='E'||abc=='I'||abc=='O'||abc=='U'))
+		{
+			while(flag==0)
+			{
+				int c=1+random(5);
+				if(c==1)
+				{
+					{
+						a[x][y]='A';     k--;
+					}
+				}
+				else if (c==2)
+				{
+					{a[x][y]='E'; k--;}
+				}
+				else if (c==3)
+				{
+					{a[x][y]='I';k--;}
+				}
+				else if (c==4)
+				{
+					{a[x][y]='O'; k--;}
+				}
+				else if (c==5)
+				{
+					{a[x][y]='U';k--;}
+				}
+			 if(!(abc==a[x][y]))flag=1;
+			 }}
+			 while(q==0)
+			 {
+				if((abc!='A'&&abc!='E'&&abc!='I'&&abc!='O'&&abc!='U')&&(a[x][y]=='A'||a[x][y]=='E'||a[x][y]=='I'||a[x][y]=='O'||a[x][y]=='U'))
+				{
+					a[x][y]=65+random(26);
+				}
+				else q=1;
+			 }
+
+}
