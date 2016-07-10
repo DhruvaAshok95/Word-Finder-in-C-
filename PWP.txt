@@ -1,0 +1,431 @@
+#include<graphics.h>
+#include<conio.h>
+#include<dos.h>
+#include<stdlib.h>
+#include<fstream.h>
+#include"COMBINAT.CPP" // GENERATES THE COMBINATION OF THE GRID
+#include"MOUSE.CPP"
+#include<bios.h>
+#include"DRAWING.CPP"
+#include"HISCORE.CPP" //TO UPDATE HIGHSCORE
+
+//#include"MUSIC.CPP" //FOR BGM. NOT DONE IN THIS VERSION
+char y[]="dic03.txt";
+struct  time t;
+int points;
+int dt,pt;
+class program
+{
+	int i,d,j,m,n;
+	char s[20],abc[20];
+	int find(char*,int);
+	void survival();
+	void design();
+	void file_name(int);
+	public:void start();
+}*p;
+void program::start()
+{       
+	cleardevice();
+	settextstyle(3,0,6);
+	outtextxy(100,50,"MODES");
+	rectangle(140,148,240,185);
+	settextstyle(1,0,3);
+	outtextxy(150,150,"classic");
+	outtextxy(150,250,"survival");
+	rectangle(140,248,240,288);
+	rectangle(140,340,240,380);outtextxy(160,342,"EXIT");
+	randomize();
+	while(7)
+	{           setcolor(1+random(13));
+		    mo.show_mouse();
+		    mo.get_status();
+		    if((cx>140&&cx<240)&&(cy>148&&cy<185))design();
+			else if((cx>140&&cx<240)&&(cy>248&&cy<288))survival();
+				else if((cx>140&&cx<240)&&(cy>220&&cy<380))exit(0);
+	}
+}
+void program::file_name(int cc)  // GENERATING DICTIONARY FILE NAME TO SEARCH FOR THE WORD IN
+{
+       if(cc<=9)
+       {  y[3]='0';
+	y[4]=(48+cc);
+	  }
+       else
+       {
+		y[3]='1';
+		y[4]= (48+ (cc%10));
+       }
+
+
+}
+int program::find(char *x, int cc) //CHECKING IF THE WORD EXISTS IN THE DICTIONARY
+{
+		if (cc<3) return 0;
+		char a[27];
+		int flag=0;
+		ifstream f( y , ios::in);
+		f>>a;
+		while(!f.eof())
+		{
+			if(strcmpi(a,x)==0)
+			return 1;
+			f>>a;
+		}
+		f.close();
+		if(flag==0)return 0;
+}
+void display_points()
+{
+	char s[20];
+	int p=points;int r=0;
+	int q=points;  mo.hide_mouse();
+	while(p!=0)
+	{
+		r++;
+		p=p/10;
+	}
+	s[r]='\0';
+	while(r!=0)
+	{
+		r--;
+		s[r]=(48+q%10);
+		q=q/10;
+
+	}
+	if(s[r]=='\0')
+	{
+		s[r]='0';
+		s[r+1]='\0';
+	}
+	delay(100);
+	cleardevice();
+	 randomize();
+		while(bioskey(1)==0)
+		{
+			settextstyle(4,0,3);
+			setcolor(1+random(14));
+			outtextxy(105,105,"YOUR SCORE IS:");
+			setcolor(1+random(14));
+			outtextxy(320,105,s);
+			settextstyle(2,0,7);
+			outtextxy(150,150,"THANK YOU FOR PLAYING");
+			settextstyle(2,0,7);
+			outtextxy(300,300,"Hit esc Key to End game");
+			outtextxy(300,340,"Hit any key to play again");
+			delay(50);
+		}
+		if(bioskey(0)==283)exit(0);
+			else
+			{
+				 hs.score=points;
+				 hs.highscore();
+				 void opening();
+				 opening();
+			}
+			gettime(&t);
+			pt= int(t.ti_sec)+int((t.ti_min)*60); dt=int((t.ti_sec)*60)-pt;  //CALCULATES TIME LEFT FOR THE USER
+}
+
+
+void program::design()
+{
+		int	driver = 9, mode = 2;
+		initgraph(&driver, &mode,"f:\\tc\\bgi"); //DRIVER ALREADY INITIALIZED
+		delay(400);
+		draw();
+		create();
+		display();
+		mo.show_mouse();
+		int flag=0;points=0;
+		char vn[3];
+		int check=0,z=5;
+		char ch[200];ch[0]='\0';
+		int  l=strlen(ch)-1;
+		int d=40,w=355,q=100;
+		int da=20,ig=8,nv=11;
+		rectangle(10,10,130,30);
+		rectangle(305,250,350,300);
+		setcolor(WHITE);
+		outtextxy(320,275,"<-");
+		setcolor(YELLOW);
+		randomize();
+				gettime(&t);
+				pt = int( t.ti_sec)+int((t.ti_min)*60);
+				while (7)
+				{
+					gettime(&t);
+					dt = int(t.ti_sec)+int((t.ti_min)*60) - pt;
+					char m[20];
+					flag=0;check=0;
+					itoa(abs(dt), m, 10); //CONVERTS INT TO STR
+					setcolor(RED);
+					outtextxy(290,3,"TIME : ");
+					setfillstyle(1,BLACK);
+					bar(350,1,390,20);
+					setcolor(WHITE);
+					outtextxy(350,3,m);
+					outtextxy(370,3,"seconds");
+					if (abs(dt)>60) { display_points();}
+					while(flag==0)
+					{
+
+					setcolor(1+random(14));
+					mo.get_status();
+					int x1=(cy-100)/50;
+					int y1=(cx-100)/50;
+					s[0]=a[y1][x1];s[1]='\0';
+					mo.hide_mouse();
+					if((cx>100&&cx<300)&&(cy>100&&cy<300))outtextxy(y1*50+122,x1*50+122,s);
+					mo.show_mouse();
+
+					delay(300);
+					if ((cx>=100 && cx<=300) && (cy>=300 && cy<=340))
+					{
+						mo.hide_mouse();
+						outtextxy(181,315,"ENTER");
+						setcolor(WHITE);
+
+						flag=1;
+						for(i=0;i<4;i++)
+						{
+							for(j=0;j<4;j++)
+							{
+								s[0]=a[i][j] ;s[1]='\0';
+								setcolor(WHITE);
+								outtextxy(i*50+122,j*50+122,s);
+							}
+						}  delay(90);
+						outtextxy(181,315,"ENTER");
+						  mo.show_mouse();
+					}
+					 if((cx>=100&&cx<=300)&&(cy>=360 && cy<=400))
+					  {
+						mo.hide_mouse();
+						outtextxy(181,380,"Exit");
+						display_points();
+					}
+				else
+					{
+						 abc[check]=a[y1][x1];if((cx>100&&cx<300)&&(cy>100&&cy<300)){setcolor(WHITE);vn[0]=abc[check];vn[1]='\0';if(nv<120)outtextxy(nv+=ig,15,s);}
+						if((!((cx>=100&&cx<=300)&&(cy>=300&&cy<=340)))&&(cx>=100&&cx<=300)&&(cy>=100&&cy<=300))
+						{
+							setcolor(BLACK);
+							mo.hide_mouse();
+							outtextxy(y1*50+122,x1*50+122,s);
+							mo.show_mouse();
+							replacement(s[0],y1,x1);
+							s[0]=a[y1][x1];s[1]='\0';
+							setcolor(WHITE);
+							mo.hide_mouse();
+							outtextxy(y1*50+122,x1*50+122,s);
+							mo.show_mouse();
+						}
+					}
+
+					if((cx>305&&cx<350)&&(cy>250&&cy<300))
+					{      mo.hide_mouse() ;
+						setcolor(1+random(13));
+						outtextxy(320,275,"<-");
+						delay(90);
+						if(z-->0)
+						{
+							setfillstyle(1,BLACK);
+							check--;
+							if(nv>11)
+						{
+							bar(nv,11,129,29);
+							nv-=ig;
+						}
+						else bar(nv,11,129,29);
+						setcolor(WHITE);
+						outtextxy(320,275,"<-");
+						mo.show_mouse();
+					}
+					else {setcolor(WHITE);outtextxy(320,275,"<-");mo.show_mouse();outtextxy(450,20,"not allowed");delay(500);setcolor(BLACK);outtextxy(450,20,"not allowed");}
+				}
+					else check++;
+			}abc[check-1]='\0'; d=40;
+
+			file_name(check-1);
+			int ln,l;ln=check-1;
+			if(find(abc,check-1))
+			{
+					if(ln>l)l=ln;
+				   if(q>=300){q=100;w=355;setfillstyle(1,BLACK);bar(w,q,400,350);outtextxy(w,q,abc);q+=da;}
+					else{outtextxy(w,q,abc);q+=da;}
+
+				setcolor(WHITE);outtextxy(450,20,"CORRECT WORD");delay(500) ;
+				points=points+(2*(check-1));
+				setcolor(BLACK);outtextxy(450,20,"CORRECT WORD");nv=11;setfillstyle(1,BLACK);bar(11,11,129,29);
+
+			}
+			else
+			{
+				setcolor(WHITE);
+				outtextxy(450,20,"INVALID WORD");nv=11;setfillstyle(1,BLACK);bar(11,11,129,29);
+
+				delay(800);
+				setcolor(BLACK);
+				outtextxy(450,20,"INVALID WORD");
+			}
+
+
+
+
+		}
+		getch();
+		closegraph();
+}
+void program::survival() //SURVIVAL MODE
+{
+
+	int	driver = 9, mode = 2;
+		initgraph(&driver, &mode,"f:\\tc\\bgi");
+		delay(400);
+		draw();
+		create();
+		display();
+		mo.show_mouse();
+		int flag=0;points=0;
+		char vn[3];
+		int check=0,z=5;
+		char ch[200];ch[0]='\0';
+		int  l=strlen(ch)-1;
+		int d=40,w=355,q=100;
+		int da=20,ig=8,nv=11;
+		rectangle(10,10,130,30);
+		rectangle(305,250,350,300);
+		setcolor(WHITE);
+		outtextxy(320,275,"<-");
+		setcolor(YELLOW);
+		randomize();
+				gettime(&t);
+				pt = int( t.ti_sec)+int((t.ti_min)*60);
+				while (7)
+				{
+					gettime(&t);
+					dt = int(t.ti_sec)+int((t.ti_min)*60) - pt;
+					char m[20];
+					flag=0;check=0;
+					itoa(abs(dt), m, 10);
+					setcolor(RED);
+					outtextxy(290,3,"TIME : ");
+					setfillstyle(1,BLACK);
+					bar(350,1,390,20);
+					setcolor(WHITE);
+					outtextxy(350,3,m);
+					outtextxy(370,3,"seconds");
+					if (abs(dt)>120) { display_points();}
+			while(flag==0)
+			{
+
+
+				setcolor(1+random(14));
+				mo.get_status();
+				int x1=(cy-100)/50;
+				int y1=(cx-100)/50;
+				s[0]=a[y1][x1];s[1]='\0';
+				mo.hide_mouse();
+				if((cx>100&&cx<300)&&(cy>100&&cy<300))outtextxy(y1*50+122,x1*50+122,s);
+				mo.show_mouse();
+
+				delay(300);
+				if ((cx>=100 && cx<=300) && (cy>=300 && cy<=340))
+				{
+					mo.hide_mouse();
+					outtextxy(181,315,"ENTER");//delay(100);
+					setcolor(WHITE);
+
+					flag=1;
+					for(i=0;i<4;i++)
+					{
+						for(j=0;j<4;j++)
+						{
+							s[0]=a[i][j] ;s[1]='\0';
+							setcolor(WHITE);
+							outtextxy(i*50+122,j*50+122,s);
+						}
+					}  delay(90);
+					outtextxy(181,315,"ENTER");
+					  mo.show_mouse();
+				}
+				 if((cx>=100&&cx<=300)&&(cy>=360 && cy<=400))
+				{
+					mo.hide_mouse();
+					outtextxy(181,380,"Exit");
+					display_points();
+				}
+				else
+				{
+                                         abc[check]=a[y1][x1];if((cx>100&&cx<300)&&(cy>100&&cy<300)){setcolor(WHITE);vn[0]=abc[check];vn[1]='\0';if(nv<120)outtextxy(nv+=ig,15,s);}
+					if((!((cx>=100&&cx<=300)&&(cy>=300&&cy<=340)))&&(cx>=100&&cx<=300)&&(cy>=100&&cy<=300))
+					{
+						setcolor(BLACK);
+						mo.hide_mouse();
+						outtextxy(y1*50+122,x1*50+122,s);
+						mo.show_mouse();
+						replacement(s[0],y1,x1);
+						s[0]=a[y1][x1];s[1]='\0';
+						setcolor(WHITE);
+						mo.hide_mouse();
+						outtextxy(y1*50+122,x1*50+122,s);
+						mo.show_mouse();
+					}
+				}
+
+				if((cx>305&&cx<350)&&(cy>250&&cy<300))
+				{      mo.hide_mouse() ;
+                                        setcolor(1+random(13));
+					outtextxy(320,275,"<-");
+					delay(90);
+                                        if(z-->0)
+                                        {
+                                             //   outtextxy(450,20,mn);
+						setfillstyle(1,BLACK);
+						check--;
+                                                if(nv>11)
+                                                {
+							bar(nv,11,129,29);
+							nv-=ig;
+                                                }
+                                                else bar(nv,11,129,29);
+						setcolor(WHITE);
+						outtextxy(320,275,"<-");
+						mo.show_mouse();
+                                        }
+                                        else {setcolor(WHITE);outtextxy(320,275,"<-");mo.show_mouse();outtextxy(450,20,"not allowed");delay(500);setcolor(BLACK);outtextxy(450,20,"not allowed");}
+				}
+                                	else check++;
+			}abc[check-1]='\0'; d=40;
+
+			file_name(check-1);
+			int ln,l;ln=check-1;
+			if(find(abc,check-1))
+                     	{           if(ln>l)l=ln;
+                                     if(q>=300){q=100;w=355;setfillstyle(1,BLACK);bar(w,q,400,350);outtextxy(w,q,abc);q+=da;}
+					else{outtextxy(w,q,abc);q+=da;}
+
+
+				setcolor(WHITE);outtextxy(450,20,"CORRECT WORD");delay(500) ;
+				points=points+(2*(check-1));
+				setcolor(BLACK);outtextxy(450,20,"CORRECT WORD");nv=11;setfillstyle(1,BLACK);bar(11,11,129,29);
+
+			}
+			else
+			{
+				setcolor(WHITE);
+				outtextxy(450,20,"INVALID WORD");nv=11;setfillstyle(1,BLACK);bar(11,11,129,29);
+
+				delay(800);display_points();
+				setcolor(BLACK);
+				outtextxy(450,20,"INVALID WORD");
+			}
+
+
+
+		}
+		getch();
+		closegraph();
+}
+
