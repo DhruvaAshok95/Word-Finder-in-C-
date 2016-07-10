@@ -1,0 +1,193 @@
+// RUN THIS FILE TO START
+
+
+#include<graphics.h>
+#include<conio.h>
+#include<stdlib.h>
+#include<dos.h>
+#include"PWP.CPP"
+char s[]="PLAY",kc[]="EXIT",da[]="HELP",sc[]="SCORES";
+void instruction()  //HELP OPTION LEADS HERE
+{       mo.hide_mouse();
+	 cleardevice();
+	 mo.hide_mouse();
+
+	 while(7)
+	 {
+		 while(bioskey(1)==0)
+		 {
+		      //   mo.show_mouse();
+			 settextstyle(4,0,5);
+			 outtextxy(25,25,"HELP");
+			 settextstyle(13,0,1);
+			 outtextxy(30,100,"->OBJECTIVE:TO FIND AS MANY WORDS AS POSSIBLE WITHIN TIME LIMIT");
+			 outtextxy(30,120,"->MINIMUM LENGTH OF WORD SHOULD BE 3 LETTERS");
+			  outtextxy(30,140,"->POINTS ARE AWARDED FOR EVERY RIGHT WORD ");
+			 outtextxy(30,160,"->THERE ARE TWO GAME MODE: CLASSIC AND SURVIVAL.SELECT TO KNOW MORE.");
+			 outtextxy(220,180,"hit 'c' for classic and 's' for survival");
+			  rectangle(30,180,100,200);outtextxy(35,185,"CLASSIC");
+			  rectangle(130,180,200,200);
+			  outtextxy(135,185,"SURVIVAL");
+			  outtextxy(400,340," esc for main menu");
+			  //rectangle(400,340,440,380);
+			  outtextxy(30,220,"->TOTAL TIME LIMIT: 1 MINUTE");
+			//  mo.get_status();
+		 } int  key=bioskey(0);
+			  if(key==11875)
+			 {
+				void classic();classic();
+			 }
+
+					else if(key==8051)
+					{
+						void surv();
+						surv();
+					}
+						else if(key==283)
+						 {
+							void opening();
+							opening();
+						 }
+	 }
+
+}
+void surv()
+{
+		cleardevice();
+		settextstyle(4,0,5);
+		outtextxy(25,25,"HELP"); outtextxy(150,25,"SURVIVAL");
+		settextstyle(13,0,1);
+   //             outtextxy(100,100,"hit any key to see information.double tap esc to go back");getch();
+ //               cleardevice();
+		while(bioskey(1)==0)
+	       {
+		outtextxy(30,100,"->IN THIS MODE YOU MAKE WORDS TILL TIME RUNS OUT OR TILL YOU FORM A WRONG WORD. ");
+		outtextxy(30,120,"->YOU ARE AWARDED PTS FOR EVERY RIGHT WORD");
+		outtextxy(30,140,"->EVERY TIME A LETTER IS CLICKED, IT IS REPLACED WITH A NEW LETTER.");
+		outtextxy(30,160,"->MORE TIME IS AWARDED WHENEVER A RIGHT WORD IS FORMED.");
+		outtextxy(150,340,"esc for prev menu. any other key for main menu");
+	       }
+		//getch();
+		void opening();
+		if(bioskey(0)==283)instruction();
+			else opening();
+
+}
+void classic()
+{
+
+		cleardevice();
+		settextstyle(4,0,5);
+		outtextxy(25,25,"HELP"); outtextxy(150,25,"CLASSIC");
+		settextstyle(13,0,1);
+		while(bioskey(1)==0)
+	       {
+		outtextxy(30,100,"->IN THIS MODE YOU MAKE WORDS TILL TIME RUNS OUT. ");
+		outtextxy(30,120,"->YOU ARE AWARDED PTS FOR EVERY RIGHT WORD");
+		outtextxy(30,140,"->EVERY TIME A LETTER IS CLICKED, IT IS REPLACED WITH A NEW LETTER.");
+		outtextxy(30,160,"->MORE TIME IS AWARDED WHENEVER A RIGHT WORD IS FORMED.");
+		outtextxy(150,340,"esc for prev menu.any other key for main menu");
+	       }
+		//getch();
+		if(bioskey(0)==283)instruction();
+			else { void opening();opening(); }
+}
+
+void get_detail()
+{
+	hs.accept();
+}
+void opening()  //OPENING SCREEN
+{
+
+	int	driver = 9, mode = 2;
+		initgraph(&driver, &mode,"c:\\TURBOC3\\bgi"); // SET THIS TO THE BGI FOLDER LOCATION IN YOUR DEVICE
+		randomize();
+		setcolor(1+random(13));
+		settextstyle(4,0,5);
+		outtextxy(175,10,"WORD FINDER");
+		int i=100,j=100,d=50;
+		int x=0;randomize();
+		mo.hide_mouse();setcolor(1+random(20));   delay(100);
+		while(7)
+		{
+			randomize();
+			for(i=100;i<380;i+=40)
+			{
+				for(j=100;j<380;j+=40)
+				{
+
+					rectangle(i,j,(i+1)*d,(j+1)*d);
+					setcolor(1+random(14));delay(70);
+
+				}
+
+			}delay(100);    char str[3],stp[3],sta[3];
+			 {       int p=0; int y=102;
+				 settextstyle(6,0,2);
+				 randomize();
+				 setcolor(1+random(14));
+				 for(i=112;i<302;i+=40,p++)
+				 {      str[0]=s[p];
+					str[1]='\0';
+					setcolor(1+random(14));
+					outtextxy(i,y,str);
+					mo.show_mouse();
+				 }  y=222;p=0;
+				 for(i=112;i<302;i+=40,p++)
+				 {      stp[0]=kc[p];
+					stp[1]='\0';
+					setcolor(1+random(14));
+					outtextxy(i,y,stp);
+					mo.show_mouse();
+				 }    	  y=142,p=0;
+				for(int i=112;i<302;i+=40,p++)
+				{
+					sta[0]=da[p];
+					sta[1]='\0';
+					setcolor(1+random(14));
+					outtextxy(i,y,sta);
+				}
+				 y=182;p=0;
+				for( i=112;i<380;i+=40,p++)
+				{
+					sta[0]=sc[p];
+					sta[1]='\0';
+					setcolor(1+random(14));
+					outtextxy(i,y,sta);
+				}
+			 }
+
+			 delay(90);mo.get_status();
+			 if((cy>100&&cy<140)&&(cx>100&&cx<380))
+			 {
+				mo.hide_mouse();
+				p=new program;
+				p->start();  //INITIALIZING THE GAME. DYNAMIC ALLOCATION
+				delete p;
+			 }
+				 else if((cy>220&&cy<260)&&(cx>100&&cx<380))exit(0);
+					else if((cy>140)&&(cy<180)&&(cx>100)&&(cx<380))instruction();
+						else if((cy>180&&cy<220)&&(cx>100&&cx<380))
+						{
+
+							mo.hide_mouse();delay(100);
+							detail printing();
+							hs.printing();
+							opening();
+
+						}
+
+
+
+		}
+
+		getch();
+		closegraph();
+}
+void main()
+{
+	get_detail(); //TO INPUT NAME OF USER
+	opening();  
+}
+
