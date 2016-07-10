@@ -7,3 +7,6 @@ It uses IO, graphics and file operations.
 The scope is purely entertainment based.
 
 Run the DISP.exe file to start the program.
+
+Classic mode - Make words till time runs out
+Survival mode - Make words till you get a wrong word or time runs out.
