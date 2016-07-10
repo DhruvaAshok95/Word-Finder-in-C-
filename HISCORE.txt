@@ -1,0 +1,142 @@
+//CALCULATES AND REPLACES THE HIGHSCORES IN THE FILE "SCORE.TXT".
+
+#include<fstream.h>
+#include<conio.h>
+#include<ctype.h>
+#include<string.h>
+#include<stdio.h>
+class detail
+{
+	char name[20];
+	public:	int score;
+	public: void accept();
+		void store();
+		void get_score();
+		void put_score();
+		void sort_array();
+		void print_score();
+		void highscore();
+		void printing();
+}hs;
+detail array[6];
+void detail::accept()
+{
+        clrscr();
+	cout<<"Enter your name : ";
+	cin>>name;
+
+}
+void detail::get_score()
+{
+	ifstream f("SCORE.txt", ios::in);
+	char na[20];
+	int c;
+	f.getline(na,100,' ');
+	int i=0;
+	while(!f.eof())
+	{
+		strcpy(array[i].name,na);
+		f>>c;
+		f.get();
+		array[i].score=c;
+		f.getline(na,100,' ');
+		i++;
+	}
+	f.close();
+}
+void detail::sort_array()
+{
+	for(int i=0; i<5; i++)
+	{
+		for(int j=0; j<5-i; j++)
+		{
+			if(array[j].score<array[j+1].score)
+			{
+				detail t;
+				t=array[j];
+				array[j]=array[j+1];
+				array[j+1]=t;
+			}
+		}
+	}
+}
+void detail::put_score()
+{
+	array[5]=hs;
+}
+void detail::print_score()
+{
+
+      
+	cleardevice();
+ 	outtextxy(100,50,"LEADERBOARDS");
+	outtextxy(100,100,"NAME");
+	outtextxy(300,100,"SCORE");
+	int z=150;
+	for(int i=0;i<5;i++)
+	{
+		char s[20];
+		int p=array[i].score;int r=0;
+		int q=array[i].score;
+		while(p!=0)
+		{
+			r++;
+			p=p/10;
+		}
+		s[r]='\0';
+		while(r!=0)
+		{
+			r--;
+			s[r]=(48+q%10);
+			q=q/10;
+
+		}
+		if(s[r]=='\0')
+			{
+			s[r]='0';
+			s[r+1]='\0';
+		}
+		int m=0;
+		setcolor(WHITE);
+		for(int k=150;k<400;k+=50)
+		{
+			outtextxy(100,k,array[m].name);
+			m++;
+		}
+		outtextxy(300,z,s);
+		z+=50;
+	}
+	void opening();
+	getch();
+	opening();
+
+}
+void detail::store()
+{
+	ofstream f("SCORE.txt",ios::out);
+	for(int i=0; i<6; i++)
+	{
+		f<<array[i].name<<' '<<array[i].score<<'\n';
+	}
+	f.close();
+}
+void detail::printing()
+{
+	hs.get_score();
+	hs.sort_array();
+	hs.put_score();
+	hs.sort_array();
+	hs.store();
+	hs.print_score();
+
+}
+void detail::highscore()
+{
+	hs.get_score();
+	hs.sort_array();
+	hs.put_score();
+	hs.sort_array();
+	hs.store();
+	score=0;
+}
+
